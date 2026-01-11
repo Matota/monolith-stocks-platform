@@ -42,7 +42,6 @@ graph TD
 
 **Ideal Use Case**: This monolith is perfect for MVP development, small teams, and apps where performance and simplicity outweigh the need for independent scaling of components.
 
-
 ## Quick Start
 
 ### 1. Setup Environment
@@ -52,7 +51,7 @@ cp .env.example .env
 
 ### 2. Run with Docker
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 ### 3. Initialize Database
@@ -83,7 +82,7 @@ npm run dev
 ## Why Monolith?
 This approach is ideal for:
 - **Simplicity**: Single codebase, easier deployment, and lower operational overhead.
-- **Perfomance**: Local function calls instead of network overhead (RPC/HTTP) between services.
+- **Performance**: Local function calls instead of network overhead (RPC/HTTP) between services.
 - **Consistency**: Easier to handle database transactions across multiple domains.
 
 Perfect for the initial phase of a project before scaling into the microservices architecture demonstrated in the parent folder.
