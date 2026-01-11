@@ -2,23 +2,46 @@
 
 A production-ready monolithic backend for a stocks trading platform.
 
-## Features
-- **Clean Architecture**: Decoupled Controllers, Services, and Repositories.
-- **Auth**: JWT-based authentication (Register/Login/Protected Routes).
-- **Trading**: Mock trade execution (BUY/SELL) with portfolio tracking.
-- **Validation**: Strict input validation using Zod.
-- **Observability**: Structured logging with Winston.
-- **Security**: Helmet, CORS, Rate limiting, and Bcrypt password hashing.
-- **ORM**: Prisma for type-safe database access and migrations.
+## Architecture
 
-## Tech Stack
-- Node.js 22
-- Express 5
-- TypeScript
-- PostgreSQL
-- Prisma ORM
-- Zod (Validation)
-- Winston (Logging)
+```mermaid
+graph TD
+    Client[Client / Postman] -->|HTTP| App[Monolith App :3000]
+    
+    subgraph "Application Layer"
+        App --> Controllers
+        Controllers --> Services
+        Services --> Repositories
+    end
+
+    subgraph "Data Layer"
+        Repositories --> DB[(PostgreSQL)]
+    end
+```
+
+## Tech Stack & Decisions
+
+| Technology | Role | Why we chose it |
+|------------|------|-----------------|
+| **Node.js 22 & Express 5** | Runtime & Framework | High performance, non-blocking I/O. Express 5 provides better error handling and native Promise support. |
+| **TypeScript** | Language | Type safety reduces runtime errors and makes the codebase self-documenting for larger teams. |
+| **Prisma ORM** | Data Access | Type-safe database queries and automated migrations. Simplifies the "Clean Architecture" repository pattern. |
+| **Zod** | Validation | Ensures that every request body is strictly validated before reaching the business logic. |
+| **Winston** | Logging | Production-grade structured logging (JSON) for better monitoring and debugging. |
+| **PostgreSQL** | Database | A robust, ACID-compliant relational database suitable for financial transactions (trades/holdings). |
+
+## Monolith vs. Microservices
+
+| Feature | Monolith (This Repo) | Microservices |
+|---------|----------------------|----------------|
+| **Deployment** | Single unit; simple CI/CD. | Multiple units; requires orchestration (K8s/Compose). |
+| **Performance** | Nano-second function calls. | Milli-second network latency between services. |
+| **Scaling** | Scale the whole app. | Scale only the heavy services (e.g., Stocks). |
+| **Complexity** | Low; single codebase. | High; requires service discovery & event buses. |
+| **Data** | Single shared database. | Isolated databases per service (harder joins). |
+
+**Ideal Use Case**: This monolith is perfect for MVP development, small teams, and apps where performance and simplicity outweigh the need for independent scaling of components.
+
 
 ## Quick Start
 
